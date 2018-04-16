@@ -6,7 +6,6 @@ var url = require('url')
 var util = require('util')
 var stream = require('stream')
 var zlib = require('zlib')
-var hawk = require('hawk')
 var aws2 = require('aws-sign2')
 var aws4 = require('aws4')
 var httpSignature = require('http-signature')
@@ -354,10 +353,6 @@ Request.prototype.init = function (options) {
   // Auth must happen last in case signing is dependent on other headers
   if (options.aws) {
     self.aws(options.aws)
-  }
-
-  if (options.hawk) {
-    self.hawk(options.hawk)
   }
 
   if (options.httpSignature) {
@@ -1423,10 +1418,6 @@ Request.prototype.httpSignature = function (opts) {
   debug('httpSignature authorization', self.getHeader('authorization'))
 
   return self
-}
-Request.prototype.hawk = function (opts) {
-  var self = this
-  self.setHeader('Authorization', hawk.client.header(self.uri, self.method, opts).field)
 }
 Request.prototype.oauth = function (_oauth) {
   var self = this
